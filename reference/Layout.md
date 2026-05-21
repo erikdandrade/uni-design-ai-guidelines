@@ -1,0 +1,195 @@
+# Platform Layout
+
+## Shell
+
+The platform shell is a full-viewport flex column. It contains two children stacked vertically: the Top Bar and a horizontal flex row (Panel + Content).
+
+```
+shell
+├── Top Bar
+└── Panel + Content (flex row)
+    ├── Side Navigation
+    └── Content Area
+```
+
+The shell has no scrolling. Individual sections inside the Content Area may scroll independently.
+
+---
+
+## Top Bar
+
+- Visible in **Default** and **Focus Mode → Full Width**. Replaced by a Local Header in **Focus Mode → Split View**.
+- Full viewport width.
+- Height: `72px`. Fixed. Does not change across modes or breakpoints.
+
+---
+
+## Side Navigation
+
+- Rendered as the first child of the Panel + Content flex row.
+- Height: viewport height minus `72px` (fills remaining shell height).
+- Width is determined by the active layout mode (see Layout Modes).
+- When width changes, it **pushes** the Content Area. It does not use `position: absolute` or overlay the Content Area.
+
+---
+
+## Content Area
+
+- Rendered as the second child of the Panel + Content flex row.
+- Takes all remaining horizontal space (`flex: 1`).
+- Contains a 12-column grid. Grid properties:
+
+### ≤ 1440px viewport width
+
+| Property | Value |
+|---|---|
+| Columns | 12 |
+| Column width | Fluid (equal share of available width after gutters and margins) |
+| Gutter | `24px` (fixed) |
+| Margin (left + right) | `32px` (fixed) |
+
+### > 1440px viewport width
+
+| Property | Value |
+|---|---|
+| Columns | 12 |
+| Column width | `76px` (fixed) |
+| Gutter | `24px` (fixed) |
+| Margin (left + right) | Fluid (absorbs all remaining space, centers the content block) |
+
+At `>1440px`, total content block width is: `(12 × 76px) + (11 × 24px)` = `912px + 264px` = `1176px`. The margin fills the rest.
+
+---
+
+## Layout Modes
+
+The platform has two top-level layout modes — **Default** and **Focus Mode** — selected based on whether the view supports cross-tool navigation or directs the user into a single task.
+
+### Default
+
+Used for all primary navigation-dependent views: tables, lists, dashboards, overviews. The Side Navigation is always visible, allowing the user to move freely across tools without losing context.
+
+The Side Navigation has two states:
+
+#### Expanded *(default)*
+
+| Element | Value |
+|---|---|
+| Top Bar | Visible |
+| Side Navigation | Visible, width `200px` |
+| Content Area | `flex: 1`, remaining width after `200px` nav |
+
+#### Collapsed
+
+| Element | Value |
+|---|---|
+| Top Bar | Visible |
+| Side Navigation | Visible, width `48px` |
+| Content Area | `flex: 1`, remaining width after `48px` nav |
+
+### Focus Mode
+
+Removes the Side Navigation to reduce cognitive load and direct the user's full attention to a single task. Used whenever the complexity or nature of the task benefits from an uninterrupted, full-width surface.
+
+**Entry / exit rule.** Focus Mode is always entered from a Default view and must provide a clear exit path back to it — typically a close action in the local header at the top of the surface.
+
+Two variants:
+
+#### Full Width
+
+For linear, step-by-step flows (wizards, multi-step journeys) and dense single-surface configurations. The user works through content sequentially or navigates a dense form without needing to reference other tools.
+
+| Element | Value |
+|---|---|
+| Top Bar | Visible |
+| Side Navigation | Not rendered |
+| Content Area | `flex: 1`, full viewport width |
+
+#### Split View
+
+For creation flows where the user configures something on the left (Setup Pane) and sees a live preview on the right (Preview Pane) simultaneously. The Setup Pane is fixed-width; the Preview Pane grows with the viewport. The platform Top Bar is replaced by a Local Header in this variant.
+
+See **Split View Layout** below for the full structural specification (shell, Local Header, panes, grids).
+
+---
+
+## Content Rules
+
+- All content inside the Content Area must be sized in **column spans**, not fixed pixel widths.
+- Column widths are fluid at `≤1440px` and will change as the Side Navigation expands or collapses. Content must reflow correctly in both nav states.
+- At `>1440px`, column widths are fixed at `76px`. Do not override this with fluid sizing above this breakpoint.
+- Gutters (`24px`) and margins (`32px` fixed, fluid above `1440px`) must never be collapsed or overridden by content.
+- Do not assume a specific Side Navigation state when sizing content. A component that spans 8 columns must work correctly at `200px` nav, `48px` nav, and no nav.
+
+---
+
+## Split View Layout
+
+A variant of Focus Mode for creation and configuration flows. The user configures on the left (Setup Pane) and previews the result on the right (Preview Pane) simultaneously. The Side Navigation is never present in this mode.
+
+### Shell Structure
+
+```
+shell
+├── Local Header
+└── Split Row (flex row, full remaining height)
+    ├── Setup Pane (left)
+    └── Preview Pane (right)
+```
+
+### Local Header
+
+- Replaces the platform Top Bar in this mode.
+- Full viewport width.
+- Height: `65px`. Fixed.
+- Left side: close action + page title.
+- Right side: primary submit action.
+- Do not render the platform Top Bar when Split View is active.
+
+### Split Row
+
+- Horizontal flex row.
+- Height: viewport height minus `65px`. No scrolling at row level.
+- Each pane scrolls independently.
+
+### Setup Pane (left)
+
+- `flex: 0 0 auto`. Does not grow beyond its column-defined width.
+- Scrollable vertically (`overflow-y: auto`). Clips horizontally.
+- Right border divider separating it from the Preview Pane.
+- 6-column grid:
+
+| Property | ≤ 1440px | > 1440px |
+|---|---|---|
+| Columns | 6 | 6 |
+| Column width | Fluid | `76px` (fixed) |
+| Gutter | `24px` | `24px` |
+| Margin (left + right) | `32px` | `32px` |
+
+At `≤1440px`: pane width = `50%` of viewport = `720px`. Columns are fluid within it.
+
+At `>1440px`: pane width is fixed at `(6 × 76px) + (5 × 24px) + (2 × 32px)` = `640px`. Does not grow further.
+
+### Preview Pane (right)
+
+- `flex: 1`. Takes all remaining width at every viewport size.
+- At `≤1440px`: `720px` (mirrors Setup Pane).
+- At `>1440px`: grows fluidly as viewport expands. Setup Pane does not grow with it.
+- 6-column grid:
+
+| Property | ≤ 1440px | > 1440px |
+|---|---|---|
+| Columns | 6 | 6 |
+| Column width | Fluid | Fluid (absorbs extra width as pane grows) |
+| Gutter | `24px` | `24px` |
+| Margin (left + right) | `64px` | `64px` (fixed) |
+
+- Preview card is centered within the pane using the `64px` margin. It spans all 6 columns and grows with the pane above `1440px`.
+
+### Split View Rules
+
+- All content in the Setup Pane must use column spans (1–6). Do not use fixed pixel widths.
+- Do not assume Setup Pane width is `720px`. At `>1440px` it is `640px`. Use 6-column spans, not pixel containers.
+- The Preview Pane must not use fixed widths for the preview card. It spans 6 columns and grows with the pane.
+- The two panes never overlap. No `position: absolute` relationship between them.
+- Side Navigation is never rendered in this mode. Do not reserve space for it.
