@@ -174,7 +174,7 @@ The same archetype reappears under different roles — e.g. the brand green is `
 
 **Text** — Use `color/text/primary` (`#171717`) for headings and body copy; `color/text/secondary` (`#6b6b6b`) for sub-labels, helper text, and inactive states; `color/text/placeholder` (`#898989`) for input placeholders and disabled button labels; `color/text/selected` (`#16a25b`) for the active nav item. Inline status indicators inside metrics use `color/text/accent/green` (`#107a44`) and `color/text/accent/red` (`#ae2924`).
 
-**Background & Surface** — `color/background/default` (`white`) for the page canvas; `color/surface/default` (`white`) for cards. Primary CTAs use `color/background/brand/bold` (`#1ad678`); secondary buttons use `color/background/neutral/subtlest` (`white`). Disabled surfaces fall back to `color/background/neutral/subtler` (`#f7f6f6`). The selected-row tint is `color/background/selected/subtle` (`#e8fcf3`). Chart fills and tag tints use the `color/background/accent/*/subtle` family — e.g. `#4ce599` (green) and `#f86d68` (red).
+**Background & Surface** — The platform shell sits on `color/surface/sunken/default` (`#f7f6f6`) as the base layer; cards, panels, and the Side Navigation elevate above it on `color/surface/default` (`white`). `color/background/default` (`white`) for the page canvas. Primary CTAs use `color/background/brand/bold` (`#1ad678`); secondary buttons use `color/background/neutral/subtlest` (`white`). Disabled surfaces fall back to `color/background/neutral/subtler` (`#f7f6f6`). The selected-row tint is `color/background/selected/subtle` (`#e8fcf3`). Chart fills and tag tints use the `color/background/accent/*/subtle` family — e.g. `#4ce599` (green) and `#f86d68` (red).
 
 **Border & Divider** — `color/border/default` (`#e0e0e0`) for cards and input outlines; `color/border/selected` (`#19b868`) for the active-tab underline; `color/divider/default` (`#e0e0e0`) for in-card separators.
 
@@ -189,6 +189,53 @@ For the complete token list with all variants and hex values, see [`Color-tokens
 ---
 
 ## 7. Components
+
+### Containers
+
+Structural content containers form a small family of three variants — `uni-box`, `uni-form`, and `uni-dialog` — sharing a common surface and visual baseline. `uni-form` and `uni-dialog` are variants of `uni-box` that add or substitute regions while preserving the core look.
+
+#### Shared Foundations
+
+All three sit on the sunken page background (`color/surface/sunken/default`, `#f7f6f6`) and use a `12px` border radius (`$radius-150`). Every internal region (header, content, footer) uses `24px` padding (`$space-300`) on all sides. Each variant exposes its own variant-prefixed slot names (`uni-box-content`, `uni-form-content`, `uni-dialog-content`, etc.) so the active variant is identifiable from the markup at a glance.
+
+#### uni-box
+
+The base content container. Wraps all page content beneath the page title and tabs.
+
+* **Anatomy** — Container with a single `uni-box-content` slot.
+* **Surface** — `color/surface/default` (`white`).
+* **Border** — `color/border/default` (`#e0e0e0`), `1px` solid.
+* **Radius** — `12px` (`$radius-150`).
+* **Padding** — `24px` on all sides inside `uni-box-content`.
+* **Header / Footer** — None.
+* **Elevation** — None.
+* **Usage** — Default page wrapper for any section that displays information or controls that do **not** require an explicit save action.
+
+#### uni-form
+
+A variant of `uni-box` for page content that must be saved as a group before changes take effect.
+
+* **Anatomy** — Container with a `uni-form-content` slot and a `uni-form-footer` slot.
+* **Surface, border, radius** — Same as `uni-box`.
+* **Content padding** — `24px` on all sides inside `uni-form-content`.
+* **Footer** — Bottom-anchored bar separated from the content area by a top divider (`color/divider/default`, `#e0e0e0`, `1px`). `24px` padding, actions right-aligned. Always contains at least one **secondary** action (cancel / discard) and one **primary** action (save / submit).
+* **Header** — None.
+* **Elevation** — None.
+* **Usage** — Page content the user must explicitly commit before changes are applied.
+
+#### uni-dialog
+
+A variant of `uni-box` for modal interactions that interrupt the current flow to request a decision or confirmation from the user.
+
+* **Anatomy** — Container with a `uni-dialog-header` slot, a `uni-dialog-content` slot, and a `uni-dialog-footer` slot.
+* **Surface** — `color/surface/default` (`white`).
+* **Border** — None *(removed; replaced by elevation)*.
+* **Radius** — `12px` (`$radius-150`).
+* **Elevation** — `$shadow-overlay` — layered drop shadow that lifts the dialog above the page.
+* **Header** — `24px` padding. Title in `heading-300/font.medium` (18 / 24) on the left; close button on the right using `uni-button-icon` *(spec TBD — to be documented separately)*.
+* **Content** — `24px` padding on all sides inside `uni-dialog-content`. Dividers (`color/divider/default`, `#e0e0e0`, `1px`) above (separating from header) and below (separating from footer).
+* **Footer** — `24px` padding, right-aligned actions: one **secondary** + one **primary**.
+* **Usage** — When an action requires the user's immediate attention and a response before they can continue — confirmations, warnings, or short focused tasks.
 
 ### Button
 

@@ -60,7 +60,7 @@ Every entry includes the token name (for semantic reference) and a hex value (fo
 | Token | Hex | Observed Usage |
 | :--- | :--- | :--- |
 | `color/surface/default` | `white` | Card surface, chart card |
-| `color/surface/sunken/default` | `#f7f6f6` | Sunken / nested container background |
+| `color/surface/sunken/default` | `#f7f6f6` | Platform shell background — sits behind all elevated content (cards, panels, forms, Side Navigation). Never foreground or interactive. |
 
 ---
 

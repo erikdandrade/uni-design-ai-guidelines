@@ -14,6 +14,8 @@ shell
 
 The shell has no scrolling. Individual sections inside the Content Area may scroll independently.
 
+The shell's base background uses `color/surface/sunken/default` (`#f7f6f6`). This sunken layer sits behind all content surfaces, creating a subtle depth separation between the page background and elevated elements (cards, panels, forms, Side Navigation). It is never used as a foreground or interactive element — its sole purpose is to establish the lowest visual layer of the layout.
+
 ---
 
 ## Top Bar
@@ -58,6 +60,8 @@ The shell has no scrolling. Individual sections inside the Content Area may scro
 | Margin (left + right) | Fluid (absorbs all remaining space, centers the content block) |
 
 At `>1440px`, total content block width is: `(12 × 76px) + (11 × 24px)` = `912px + 264px` = `1176px`. The margin fills the rest.
+
+Page content within the Content Area is wrapped in **`uni-box`** (default — sections without an explicit save action) or **`uni-form`** (when changes must be saved as a group before taking effect). See `Design-guidelines.md` § 7 Components → Containers for the full specification.
 
 ---
 
