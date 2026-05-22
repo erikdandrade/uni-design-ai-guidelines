@@ -174,6 +174,8 @@ At `≤1440px`: pane width = `50%` of viewport = `720px`. Columns are fluid with
 
 At `>1440px`: pane width is fixed at `(6 × 76px) + (5 × 24px) + (2 × 32px)` = `640px`. Does not grow further.
 
+**Composition rule.** The Setup Pane content is laid out **directly on the pane surface**. Do **not** wrap it in a `uni-box` or `uni-form` — the pane itself provides the bounded surface that a card would normally supply, and an additional inner card would create a redundant nested container. The primary commit action and the cancel / exit action hoist to the **Local Header** (Submit on the right, close `×` on the left); the Setup Pane therefore has no `uni-form-footer` of its own.
+
 ### Preview Pane (right)
 
 - `flex: 1`. Takes all remaining width at every viewport size.

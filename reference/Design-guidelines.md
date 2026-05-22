@@ -223,6 +223,8 @@ A variant of `uni-box` for page content that must be saved as a group before cha
 * **Elevation** — None.
 * **Usage** — Page content the user must explicitly commit before changes are applied.
 
+> **Split View exception.** In Focus Mode → Split View, `uni-form` is inlined into the Setup Pane — content sits directly on the pane surface, the box wrapper is omitted, and the primary / cancel actions hoist to the Local Header. See `Layout.md` → Split View Layout → Setup Pane.
+
 #### uni-dialog
 
 A variant of `uni-box` for modal interactions that interrupt the current flow to request a decision or confirmation from the user.
