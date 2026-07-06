@@ -51,7 +51,8 @@ _Append newest entries at the top. Keep each entry to what changed and why — c
 - **Verified** `menu-icons/MANIFEST.md` matches the content map (20 icons, shared `reports-and-logs-logo.svg`).
 - **Renamed** `reference/` → `UNI-Design-AI-Guidelines/` and updated the prose in `AI-builder-prompt.md` (title → "AI Guidelines"; "reference files" → "UNI Design AI Guidelines"). All relative links unaffected.
 - **Added this `CLAUDE.md`** as the per-session orientation + log doc.
-- _Status: committed to `main`; migrating the repo to the company Enterprise Cloud org (fresh repo + push; personal remote renamed to `personal` and kept as backup). `external/` left untracked as before._
+- **Migrated the repo to the company Enterprise Cloud org.** `origin` now = `emanrique_unf/uni-design-ai-guidelines` (pushed); the original personal repo (`erikdandrade/uni-design-guidelines`) is kept as the `personal` remote backup.
+- _Status: committed to `main`; `origin` is the company repo. `external/` left untracked as before._
 
 ### Before 2026-07-06
 - See `git log` for prior history (initial commit, AI builder prompt, container family / platform surface background, Split View uni-form inlining rule).
