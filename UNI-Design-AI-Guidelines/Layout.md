@@ -20,9 +20,18 @@ The shell's base background uses `color/surface/sunken/default` (`#f7f6f6`). Thi
 
 ## Top Bar
 
-- Visible in **Default** and **Focus Mode → Full Width**. Replaced by a Local Header in **Focus Mode → Split View**.
+The shell's top row holds exactly **one** header, chosen by layout mode:
+
+- **Default** mode (Expanded or Collapsed nav) → the **Main Top Bar** (`uni-top-bar`).
+- **Focus Mode** (both **Full Width** and **Split View**) → the **Local Header** (`uni-local-header`), which **replaces** the Main Top Bar.
+- **Embedded apps** (Agent Console, Chatbot) → **neither**; the app takes over the full screen with its own shell.
+
+Common to both surfaces:
+
 - Full viewport width.
 - Height: `72px`. Fixed. Does not change across modes or breakpoints.
+
+For the header **components** themselves — anatomy, slots, prop-toggled sections, tokens, and the full visibility matrix — see [`Top-bar.md`](./Top-bar.md). This file specifies only their placement within the shell.
 
 ---
 
@@ -32,6 +41,8 @@ The shell's base background uses `color/surface/sunken/default` (`#f7f6f6`). Thi
 - Height: viewport height minus `72px` (fills remaining shell height).
 - Width is determined by the active layout mode (see Layout Modes).
 - When width changes, it **pushes** the Content Area. It does not use `position: absolute` or overlay the Content Area.
+
+For the navigation **component** itself — anatomy, states, the Console → Section → child content map, and rail/accordion behavior — see [`Side-navigation.md`](./Side-navigation.md). This file specifies only the nav's placement and width within the shell.
 
 ---
 
@@ -79,7 +90,7 @@ The Side Navigation has two states:
 
 | Element | Value |
 |---|---|
-| Top Bar | Visible |
+| Main Top Bar | Visible |
 | Side Navigation | Visible, width `200px` |
 | Content Area | `flex: 1`, remaining width after `200px` nav |
 
@@ -87,9 +98,9 @@ The Side Navigation has two states:
 
 | Element | Value |
 |---|---|
-| Top Bar | Visible |
-| Side Navigation | Visible, width `48px` |
-| Content Area | `flex: 1`, remaining width after `48px` nav |
+| Main Top Bar | Visible |
+| Side Navigation | Visible, width `40px` (icon rail) |
+| Content Area | `flex: 1`, remaining width after `40px` nav |
 
 ### Focus Mode
 
@@ -105,7 +116,8 @@ For linear, step-by-step flows (wizards, multi-step journeys) and dense single-s
 
 | Element | Value |
 |---|---|
-| Top Bar | Visible |
+| Main Top Bar | Not rendered |
+| Local Header | Visible — replaces the Main Top Bar |
 | Side Navigation | Not rendered |
 | Content Area | `flex: 1`, full viewport width |
 
@@ -123,7 +135,7 @@ See **Split View Layout** below for the full structural specification (shell, Lo
 - Column widths are fluid at `≤1440px` and will change as the Side Navigation expands or collapses. Content must reflow correctly in both nav states.
 - At `>1440px`, column widths are fixed at `76px`. Do not override this with fluid sizing above this breakpoint.
 - Gutters (`24px`) and margins (`32px` fixed, fluid above `1440px`) must never be collapsed or overridden by content.
-- Do not assume a specific Side Navigation state when sizing content. A component that spans 8 columns must work correctly at `200px` nav, `48px` nav, and no nav.
+- Do not assume a specific Side Navigation state when sizing content. A component that spans 8 columns must work correctly at `200px` nav, `40px` nav, and no nav.
 
 ---
 
@@ -143,17 +155,19 @@ shell
 
 ### Local Header
 
-- Replaces the platform Top Bar in this mode.
+- Replaces the Main Top Bar in this mode (and in Focus Mode → Full Width).
 - Full viewport width.
-- Height: `65px`. Fixed.
-- Left side: close action + page title.
-- Right side: primary submit action.
-- Do not render the platform Top Bar when Split View is active.
+- Height: `72px`. Fixed.
+- Left side: close (`×`) action + flow title (the required Focus-Mode exit path).
+- Right side: action slot — default is a Secondary (cancel) + Primary (submit) pair.
+- Do not render the Main Top Bar when the Local Header is active.
+
+For the component's full anatomy, slots, and tokens, see [`Top-bar.md`](./Top-bar.md) → `uni-local-header`.
 
 ### Split Row
 
 - Horizontal flex row.
-- Height: viewport height minus `65px`. No scrolling at row level.
+- Height: viewport height minus `72px`. No scrolling at row level.
 - Each pane scrolls independently.
 
 ### Setup Pane (left)

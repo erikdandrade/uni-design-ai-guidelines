@@ -73,7 +73,9 @@ Standard platform layout for all primary navigation-dependent views: tables, lis
 The Side Navigation has two states:
 
 * **Expanded** *(default)* — Full nav with labels.
-* **Collapsed** — Icon-only nav for users who want more horizontal room while keeping cross-tool access.
+* **Collapsed** — Icon-only rail for users who want more horizontal room while keeping cross-tool access.
+
+For the navigation component spec (anatomy, states, content map, icons), see [`Side-navigation.md`](./Side-navigation.md).
 
 ### Focus Mode
 
@@ -294,3 +296,17 @@ A fundamental interactive component used to trigger user actions or process navi
   * Container Surface: `#c9312c` (`$color-red-600`)
 * **Pressed State**
   * Container Surface: `#ae2924` (`$color-red-700`)
+
+### Side Navigation
+
+The `uni-menu` side navigation is the platform's primary cross-tool navigation. It sits on `color/surface/default` (`white`) above the sunken shell, has an Expanded (`200px`) and a Collapsed icon-rail (`40px`) state, and organizes products into separator-divided section groups with accordion children, switching content by console (User / Admin).
+
+Because of its size, the side nav is documented in its own file rather than inline here. See [`Side-navigation.md`](./Side-navigation.md) for the full specification — component anatomy, the five interaction states and their token bindings, the per-console content map, the two distinct meanings of "Collapsed" (rail vs accordion), and the section logo assets in `menu-icons/`. Its placement and width within the shell are in [`Layout.md`](./Layout.md).
+
+### Platform Headers
+
+The shell's top row renders **one** of two headers, chosen by layout mode: the **Main Top Bar** (`uni-top-bar`) in Default mode, or the **Local Header** (`uni-local-header`) throughout Focus Mode — which fully replaces it. Embedded apps (Agent Console, Chatbot) render neither. Both sit on `color/surface/default` (`white`) and are `72px` tall.
+
+The Main Top Bar carries the **UNIFONIC wordmark** on the left and a set of prop-toggled right-side sections — Impersonation, Packages, Balance (+ Top Up), Timezone, and the Account menu. It has **no global search field, no help / notification / settings icon cluster, and no avatar tile**; those are not part of the spec. The Local Header carries a close (`×`) exit action + flow title on the left and a commit-action slot (Secondary + Primary) on the right — it is the required exit path out of Focus Mode.
+
+Like the side nav, the headers are documented in their own file. See [`Top-bar.md`](./Top-bar.md) for full anatomy, the prop-toggled sections, tokens, and the visibility matrix. Their placement within the shell is in [`Layout.md`](./Layout.md).
