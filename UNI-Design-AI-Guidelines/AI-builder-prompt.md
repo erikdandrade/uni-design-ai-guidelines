@@ -10,6 +10,20 @@ This project uses the **UNI Design System**. The following files — the **UNI D
 
 Treat these as the authoritative source for every design decision in this project. This is a **lightweight prototype** — apply the documented values (hex codes, type sizes, spacings, radii, shadows) directly in code. Don't build token infrastructure; visual fidelity is the goal. If Lovable generates shadcn or other component defaults, override not just their colors, typography, and radii but also their **structural defaults** — selected/hover row backgrounds, focus rings, dividers, and any furniture the generator injects on its own (search fields, avatar tiles, icon clusters) — to match the UNI specs. A default that isn't in the spec must be removed, not restyled.
 
+## Build context — ask this first
+
+Before generating anything, determine which of two contexts you are building for. **Ask the user** if it isn't already clear from the request:
+
+> *"Are you building this **inside the Unifonic Platform** (it will live within the platform's navigation shell), or as a **standalone tool** (its own product, not part of the platform's navigation)?"*
+
+The answer decides whether the platform navigation applies:
+
+- **Platform-embedded** — the feature lives inside the Unifonic Platform. Wear the **full platform chrome**: the shell, the Main Top Bar / Local Header swap pair, and the `uni-menu` side navigation populated with the **documented Console → Section → child content map** (`Side-navigation.md` §5.4). Every screen uses one of the documented layout modes. This is the default when a request clearly concerns platform features (Flow Studio, Campaigns, Admin, etc.).
+
+- **Standalone** — a tool that is **not** part of the platform's navigation. **Skip the platform chrome:** no Main Top Bar, no Local Header, no layout modes, and **do not** apply the documented Console/Section content map. The `uni-menu` side navigation is **optional** — reuse it as a component only if the tool needs its own navigation, populated with the **tool's own sections/items** (never the platform content map). Everything else still applies at full strength: typography, color tokens, spacing, radius, elevation, and all components (Button, Containers, etc.). A standalone tool should still look unmistakably like Unifonic.
+
+When in doubt, ask — do not assume platform embedding. See `Layout.md` → *Build Context* for the structural detail.
+
 ## Rules
 
 1. **Documented values only.** Every color, font size, font weight, line-height, spacing, border radius, and shadow must come from the **UNI Design AI Guidelines**. When you apply one, cite the token name and value in a comment or commit message (e.g. *"`color/text/primary` `#171717`"*) so the design intent stays traceable.
@@ -18,7 +32,7 @@ Treat these as the authoritative source for every design decision in this projec
 
 3. **Typography — heading vs body at the same size.** When two styles share the same font size (14px or 16px), use the **heading** variant for single-line UI elements (tabs, labels, compact buttons) and the **body** variant for prose, inputs, paragraphs, and breathable form sub-sections. See *Choosing Between Heading and Body at the Same Size* in `Design-guidelines.md`.
 
-4. **Layouts.** Every screen must be built on one of the documented modes:
+4. **Layouts.** *(Platform-embedded builds only — see Build Context. Standalone tools do not use these modes; they lay out on their own surface with the platform chrome skipped.)* Every platform-embedded screen must be built on one of the documented modes:
    - **Default** — navigation-dependent views (tables, lists, dashboards, overviews). **Main Top Bar** visible (build from `Top-bar.md`); Side Nav visible, Expanded (200px) or Collapsed (40px rail). Build the nav from `Side-navigation.md` — see its content map for the sections and child routes per console.
    - **Focus Mode → Full Width** — wizards, multi-step flows, dense single-surface configurations. **Local Header replaces the Main Top Bar**; no Side Nav.
    - **Focus Mode → Split View** — creation flows with a setup pane on the left and a live preview pane on the right. **Local Header replaces the Main Top Bar.**

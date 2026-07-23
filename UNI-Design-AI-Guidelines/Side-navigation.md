@@ -4,6 +4,8 @@ Specification for the UNI Design System side navigation. Authored from the live 
 
 > **Where this fits.** The side navigation is the `Side Navigation` element of the platform shell. For its position, height, and how its width pushes the Content Area, see [`Layout.md`](./Layout.md) → *Side Navigation* and *Layout Modes*. This file specifies the **component itself** — anatomy, states, content map, and icons.
 >
+> **Build context.** The component anatomy, states, sizing, and icon policy (§1–§3, §6–§7) apply in **both** build contexts (see `Layout.md` → *Build Context*). The **Console → Section → child content map** in §5.4, however, is **platform-embedded only** — it is the platform's own navigation structure. In a **standalone** build the side nav is optional; if used, reuse the component with the **tool's own sections and items**, not this content map.
+>
 > **Icon assets.** The 20 section logos referenced throughout this file live in [`./menu-icons/`](./menu-icons/); the Console/Section → file mapping is in [`./menu-icons/MANIFEST.md`](./menu-icons/MANIFEST.md). All are `currentColor` SVGs that inherit the menu-item text color.
 
 ---
@@ -191,6 +193,8 @@ Width math: Panel has 0 horizontal padding; each section group adds 8 left + 8 r
 `Console=User` and `Console=Admin` render different section sets in the same shell. The Switcher header is the entry point for changing context; the cluster contents change with `Console`.
 
 ### 5.4 Navigation content map (default instance data)
+
+> **Platform-embedded only.** This map is the Unifonic Platform's own navigation structure. Apply it only when building *inside* the platform. For a **standalone** tool, ignore this map and populate the nav with the tool's own sections/items (or omit the nav entirely). See `Layout.md` → *Build Context*.
 
 The complete parent → child structure as authored in the source file. **Displayed label** is what renders in the UI; **`Section` variant** is the Figma key (they differ in several cases — use the displayed label for build output). Sections with no children are single-link items (no chevron, no accordion).
 

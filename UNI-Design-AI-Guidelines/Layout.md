@@ -1,5 +1,16 @@
 # Platform Layout
 
+## Build Context
+
+Everything in this file describes the **Unifonic Platform shell** — the navigation chrome that wraps a feature living *inside* the platform. Before applying it, settle which of two build contexts you are in (the AI builder asks the user up front — see `AI-builder-prompt.md` → *Build context*):
+
+- **Platform-embedded** — the feature lives inside the Unifonic Platform. The full shell applies: Top Bar (Main Top Bar / Local Header swap pair), the `uni-menu` Side Navigation populated with the documented Console content map, the Content Area grid, and the Layout Modes below.
+- **Standalone** — a tool that is **not** part of the platform's navigation. The platform chrome is **skipped**: no Main Top Bar, no Local Header, no Layout Modes, and no documented Console/Section content map. The tool lays out on its own surface. The `uni-menu` Side Navigation is **optional** — reuse it as a component only if the tool needs its own navigation, filled with the tool's own items (see [`Side-navigation.md`](./Side-navigation.md)). Foundations and components (typography, color, spacing, radius, elevation, Button, Containers, etc.) still apply in full — a standalone tool should still look unmistakably like Unifonic.
+
+The remainder of this file (Shell, Top Bar, Side Navigation placement, Content Area, Layout Modes, Split View) is **platform-embedded** structure. A standalone build uses only the foundations and the component specs it chooses to reuse.
+
+---
+
 ## Shell
 
 The platform shell is a full-viewport flex column. It contains two children stacked vertically: the Top Bar and a horizontal flex row (Panel + Content).
