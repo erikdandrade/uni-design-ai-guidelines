@@ -1,0 +1,19 @@
+{
+  "name": "uni-design-ai-guidelines",
+  "owner": {
+    "name": "Unifonic Design Systems",
+    "email": "emanrique@unifonic.com"
+  },
+  "description": "UNI Design System AI Guidelines — specs and assets that steer AI-assisted UI generation for Unifonic products.",
+  "plugins": [
+    {
+      "name": "uni-design",
+      "source": "./",
+      "description": "Applies the UNI Design System (typography, color tokens, layout, side navigation, top bars, section icons) when Claude Code builds or edits UI for a Unifonic product.",
+      "author": {
+        "name": "Unifonic Design Systems"
+      },
+      "keywords": ["design-system", "ui", "unifonic"]
+    }
+  ]
+}

@@ -11,6 +11,9 @@ This repo is **not an application** — it is the **UNI Design System reference 
 ## Repository map
 
 ```
+README.md                          ← front door: what this repo is, links to CLAUDE.md and SETUP.md
+SETUP.md                           ← per-tool instructions: Lovable, Claude Code, Replit, Claude.ai Projects
+
 UNI-Design-AI-Guidelines/          ← the authoritative specs (formerly reference/)
 ├── AI-builder-prompt.md            ← the prompt injected into Lovable: authority + anti-invention rules
 ├── Design-guidelines.md            ← typography, spacing, radius, elevation, colors, components (Containers, Button, Side Nav, Platform Headers)
@@ -19,6 +22,9 @@ UNI-Design-AI-Guidelines/          ← the authoritative specs (formerly referen
 ├── Side-navigation.md              ← uni-menu spec: anatomy, states, Console→Section→child content map
 ├── Top-bar.md                      ← uni-top-bar (Main Top Bar) + uni-local-header (Local Header): anatomy, visibility matrix
 └── menu-icons/                     ← 20 section-logo SVGs + MANIFEST.md (Section → file mapping)
+
+.claude-plugin/marketplace.json    ← Claude Code plugin marketplace catalog (one plugin: "uni-design", source = repo root)
+skills/uni-design/SKILL.md         ← the installable skill: triggers on UI-gen requests, points at AI-builder-prompt.md
 
 external/                           ← untracked scratch/source (uni-menu.md, uni-menu-icons/); not part of the guidelines
 ```
@@ -29,7 +35,8 @@ external/                           ← untracked scratch/source (uni-menu.md, u
 - **Header swap pair.** The shell's top row renders exactly one header: **Main Top Bar** in Default mode, **Local Header** throughout Focus Mode (both Full Width *and* Split View). Embedded apps (Agent Console, Chatbot) render neither. Both are **72px**. Full spec in `Top-bar.md`.
 - **Anti-invention rules** live in `AI-builder-prompt.md`: documented values only; a geometry-only region is a *gap* (render empty + flag, don't populate); enumerated states are *closed* (add no background/border/shadow not listed); strip shadcn structural defaults not in the spec. These exist because Lovable once invented a whole top bar and a green selected-row pill.
 - **Icon manifest** (`menu-icons/MANIFEST.md`) is verified consistent with the Side-nav content map: 20 unique SVGs, `reports-and-logs-logo.svg` shared by User→`Reports&Logs` and Admin→`Reporting`.
-- **How the guidelines reach Lovable:** recommended path is **GitHub two-way sync** (full specs) + **Knowledge base** entry (the `AI-builder-prompt.md` rules + a "read the relevant `/UNI-Design-AI-Guidelines/*.md` file" pointer; Knowledge caps at ~10,000 chars, so the bulk specs stay in the synced repo).
+- **How the guidelines reach each tool:** see `SETUP.md` for the full per-tool recipe. Lovable: **GitHub two-way sync** (full specs) + **Knowledge base** entry (the `AI-builder-prompt.md` rules + a "read the relevant `/UNI-Design-AI-Guidelines/*.md` file" pointer; Knowledge caps at ~10,000 chars, so the bulk specs stay in the synced repo). Claude Code: install this repo as a **plugin** (`/plugin marketplace add emanrique_unf/uni-design-ai-guidelines`) — the `uni-design` skill (`skills/uni-design/SKILL.md`) triggers on UI-gen requests. Replit: git submodule + a pointer in the consuming project's own `replit.md`. Claude.ai Projects: GitHub connector on manual "Sync now" (no live sync yet).
+- **Icons are always inlined, never linked out.** `menu-icons/` SVGs travel with the repo via whatever sync mechanism each tool uses (above); generated code must inline the raw `<svg>` markup rather than reference an external URL — this matters most for Claude.ai Artifacts, whose CSP blocks external image/network requests outright.
 
 ## How to work in this repo
 
@@ -43,6 +50,22 @@ external/                           ← untracked scratch/source (uni-menu.md, u
 ## Session Log
 
 _Append newest entries at the top. Keep each entry to what changed and why — commit history holds the line-level detail._
+
+### 2026-07-22
+- **Made the guidelines distributable beyond Lovable** to teammates on Claude Code, Replit, and Claude.ai Projects, on the `distribute-guidelines` branch.
+- **Added root `README.md`** (repo previously had none) as the front door, and **`SETUP.md`** with copy-pasteable per-tool instructions for all four tools.
+- **Shipped a Claude Code plugin**: `.claude-plugin/marketplace.json` (marketplace `uni-design-ai-guidelines`, one plugin `uni-design` with `source: "./"` — the whole repo, so specs and `menu-icons/` travel with it, no separate copy) + `skills/uni-design/SKILL.md` (triggers on UI-generation requests, points at `AI-builder-prompt.md`). No `version` pinned, so every commit to `main` counts as an update. Verified the exact schema against the current Claude Code plugin/marketplace docs before writing the JSON.
+- **Decided icons are never externally hosted.** `menu-icons/` SVGs reach every tool by full-repo sync/bundle/submodule/Knowledge-upload, and generated code must always inline the raw `<svg>` markup rather than link to a URL — this is required for Claude.ai Artifacts specifically, since their CSP blocks external image/network requests. Flagged as unverified whether Claude.ai's GitHub connector indexes `.svg` content as readable text; `SETUP.md` says to test this by hand before relying on it.
+- **Access model decided with the user:** internal Unifonic teammates only, read-only for consumers with a small maintainer group keeping write access — a GitHub Enterprise org-settings action the user does themselves (no `gh` CLI available locally to script it).
+- _Status: all new files created on `distribute-guidelines` branch off `main`; not yet committed or pushed._
+
+### 2026-07-07
+- **Introduced a two-context build model** so the guidelines serve both a feature built *inside* the Unifonic Platform and a *standalone* tool that doesn't need the platform navigation.
+- **`AI-builder-prompt.md`**: added a **"Build context — ask this first"** section instructing the AI builder to ask the user *"inside the Unifonic Platform, or standalone tool?"* before generating, and defining the two branches. Scoped Rule 4 (documented layout modes) to **platform-embedded only**.
+- **`Layout.md`**: added a **Build Context** section stating the whole file is platform-embedded chrome; standalone skips Top Bar + Layout Modes + content map but keeps foundations/components. Side nav is optional in standalone.
+- **`Side-navigation.md`**: flagged the component anatomy/states as applying to both contexts, but the **§5.4 Console→Section content map as platform-embedded only** (standalone reuses the component with its own items).
+- **Decisions (from user):** context names = **Platform-embedded vs Standalone**; standalone keeps `uni-menu` as an optional reusable component but no top bar.
+- _Status: edits made on `main`, not yet committed._
 
 ### 2026-07-06
 - **Diagnosed** why Lovable mis-generated the Top Bar and Side Navigation: the Top Bar had no anatomy spec (only geometry), so the model invented its contents (green "U" logo, global search, icon cluster, avatar); the side nav's Selected state wasn't declared closed, so a shadcn green selected-row pill survived.
