@@ -51,6 +51,14 @@ external/                           ← untracked scratch/source (uni-menu.md, u
 
 _Append newest entries at the top. Keep each entry to what changed and why — commit history holds the line-level detail._
 
+### 2026-07-28
+- **Expanded `AI-builder-prompt.md`'s single build-context question into a 3-question mandatory gate**, renamed "Build context — ask this first" → **"Ask this first"**, in prep for a future public repo aimed at Lovable's GitHub-import flow (repo hosting/visibility decision deferred — see below).
+- **New question 2 (Layout mode → header):** asked only if Q1 = Platform-embedded, as its own gate — deliberately **not** folded into the Platform-embedded/Standalone answer the way it was implicitly before. Determines Main Top Bar vs. Local Header vs. no side nav, per `Top-bar.md` §1 / `Design-guidelines.md` Rule 4.
+- **New question 3 (Side navigation icons):** asked only if Q1 = Platform-embedded *and* Q2 = Default (Focus Mode renders no side nav, so the question doesn't apply there). Points the builder at `Side-navigation.md` §5.4's content map and `menu-icons/MANIFEST.md` for the correct SVG.
+- **Decided (with user):** icons gating depends only on the platform-embedded/standalone answer (standalone never uses the platform content map); the header/layout-mode gating must NOT depend entirely on that same answer — it's an independent question, asked separately, only reached when platform-embedded.
+- **Distribution plan in progress, not yet executed:** goal is a **new, separate public GitHub repo** (not making `unifonic-engineering/uni-design-ai-guidelines` itself public — confirmed blocked: no Danger Zone/repo-admin access, and enterprise policy page also inaccessible to the user) that a PM can import into a new Lovable project via Lovable's GitHub-import-as-starting-project feature, carrying a copy of `UNI-Design-AI-Guidelines/` plus a new LLM-facing entry point enforcing the 3-question flow above. Open items before building it: new repo owner/name, and the sync strategy to keep it current with this internal repo (leaning manual-copy-per-release, not yet decided).
+- Also removed an unrelated abandoned trial, `lovable-remix-kit/` (untracked, never committed) — a different draft approach (Workspace Knowledge + Remixable Starter project built manually inside Lovable's own UI) that predates the GitHub-import mechanism above; deleted per its own README's built-in escape hatch ("delete this folder, no cleanup elsewhere").
+
 ### 2026-07-22
 - **Made the guidelines distributable beyond Lovable** to teammates on Claude Code, Replit, and Claude.ai Projects, on the `distribute-guidelines` branch.
 - **Added root `README.md`** (repo previously had none) as the front door, and **`SETUP.md`** with copy-pasteable per-tool instructions for all four tools.

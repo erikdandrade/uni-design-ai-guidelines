@@ -10,19 +10,42 @@ This project uses the **UNI Design System**. The following files — the **UNI D
 
 Treat these as the authoritative source for every design decision in this project. This is a **lightweight prototype** — apply the documented values (hex codes, type sizes, spacings, radii, shadows) directly in code. Don't build token infrastructure; visual fidelity is the goal. If Lovable generates shadcn or other component defaults, override not just their colors, typography, and radii but also their **structural defaults** — selected/hover row backgrounds, focus rings, dividers, and any furniture the generator injects on its own (search fields, avatar tiles, icon clusters) — to match the UNI specs. A default that isn't in the spec must be removed, not restyled.
 
-## Build context — ask this first
+## Ask this first
 
-Before generating anything, determine which of two contexts you are building for. **Ask the user** if it isn't already clear from the request:
+Before generating anything, resolve the following **in order**. **Ask the user** at each step if the answer isn't already clear from the request — do not guess past a gap.
+
+### 1. Build context
 
 > *"Are you building this **inside the Unifonic Platform** (it will live within the platform's navigation shell), or as a **standalone tool** (its own product, not part of the platform's navigation)?"*
 
 The answer decides whether the platform navigation applies:
 
-- **Platform-embedded** — the feature lives inside the Unifonic Platform. Wear the **full platform chrome**: the shell, the Main Top Bar / Local Header swap pair, and the `uni-menu` side navigation populated with the **documented Console → Section → child content map** (`Side-navigation.md` §5.4). Every screen uses one of the documented layout modes. This is the default when a request clearly concerns platform features (Flow Studio, Campaigns, Admin, etc.).
+- **Platform-embedded** — the feature lives inside the Unifonic Platform. Wear the **full platform chrome**: the shell, the Main Top Bar / Local Header swap pair, and the `uni-menu` side navigation populated with the **documented Console → Section → child content map** (`Side-navigation.md` §5.4). Every screen uses one of the documented layout modes. This is the default when a request clearly concerns platform features (Flow Studio, Campaigns, Admin, etc.). Continue to questions 2 and 3 below.
 
-- **Standalone** — a tool that is **not** part of the platform's navigation. **Skip the platform chrome:** no Main Top Bar, no Local Header, no layout modes, and **do not** apply the documented Console/Section content map. The `uni-menu` side navigation is **optional** — reuse it as a component only if the tool needs its own navigation, populated with the **tool's own sections/items** (never the platform content map). Everything else still applies at full strength: typography, color tokens, spacing, radius, elevation, and all components (Button, Containers, etc.). A standalone tool should still look unmistakably like Unifonic.
+- **Standalone** — a tool that is **not** part of the platform's navigation. **Skip the platform chrome:** no Main Top Bar, no Local Header, no layout modes, and **do not** apply the documented Console/Section content map. The `uni-menu` side navigation is **optional** — reuse it as a component only if the tool needs its own navigation, populated with the **tool's own sections/items** (never the platform content map). Everything else still applies at full strength: typography, color tokens, spacing, radius, elevation, and all components (Button, Containers, etc.). A standalone tool should still look unmistakably like Unifonic. **Skip questions 2 and 3 — neither header nor the icon content map applies.**
 
 When in doubt, ask — do not assume platform embedding. See `Layout.md` → *Build Context* for the structural detail.
+
+### 2. Layout mode → header (platform-embedded only)
+
+Ask only if question 1 answered **Platform-embedded**:
+
+> *"Which layout mode does this screen use — **Default** (a navigation-dependent view: tables, lists, dashboards, overviews), **Focus Mode → Full Width** (a wizard or dense single-surface task), or **Focus Mode → Split View** (a setup pane on the left with a live preview on the right)?"*
+
+This is a separate gate from question 1 — it is not implied by "platform-embedded," it must be asked on its own. The answer decides the header (a swap pair — never both, never neither except embedded apps) and whether the side nav renders at all:
+
+- **Default** → **Main Top Bar** (`uni-top-bar`); `uni-menu` side nav visible (Expanded or Collapsed).
+- **Focus Mode → Full Width** or **Focus Mode → Split View** → **Local Header** (`uni-local-header`) replaces the Main Top Bar; **no side nav**.
+
+See `Top-bar.md` §1 (visibility matrix) and `Design-guidelines.md` Rule 4 for full detail.
+
+### 3. Side navigation icons (platform-embedded + Default layout only)
+
+Ask only if question 1 answered **Platform-embedded** *and* question 2 answered **Default** (Focus Mode renders no side nav, so this question does not apply there):
+
+> *"Which Console — **User** or **Admin** — and which Section(s) does this screen belong to, so the correct section-logo icon(s) from `menu-icons/` populate the side nav?"*
+
+Match the answer against the documented Console → Section content map (`Side-navigation.md` §5.4) and pull the corresponding SVG from `menu-icons/` per `menu-icons/MANIFEST.md` — never invent or substitute a placeholder icon.
 
 ## Rules
 
