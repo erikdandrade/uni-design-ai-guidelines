@@ -1,6 +1,6 @@
 # Setup — connecting your AI tool to the UNI Design AI Guidelines
 
-This repo is **read-only for consumers, centrally maintained** by the design systems team. Pick your tool below. In every case, the goal is the same: point the tool at `UNI-Design-AI-Guidelines/` (and `AI-builder-prompt.md` specifically) so it builds from documented values instead of inventing its own.
+This repo is **read-only for consumers**, hosted on a personal GitHub account (`erikdandrade`) and maintained by its owner. Pick your tool below. In every case, the goal is the same: point the tool at `UNI-Design-AI-Guidelines/` (and `AI-builder-prompt.md` specifically) so it builds from documented values instead of inventing its own.
 
 If a value you need isn't documented, that's a gap — flag it rather than guessing, and open a PR against `main` if you can fill it in from the source Figma.
 
@@ -10,7 +10,7 @@ If a value you need isn't documented, that's a gap — flag it rather than guess
 
 Lovable's Knowledge panel caps at ~10,000 characters, so the full specs can't be pasted in directly.
 
-1. **GitHub two-way sync**: connect this repo (`emanrique_unf/uni-design-ai-guidelines`) to your Lovable project via its GitHub integration. This gives Lovable the full `UNI-Design-AI-Guidelines/` folder, including `menu-icons/`.
+1. **GitHub two-way sync**: connect this repo (`erikdandrade/uni-design-ai-guidelines`) to your Lovable project via its GitHub integration. This gives Lovable the full `UNI-Design-AI-Guidelines/` folder, including `menu-icons/`.
 2. **Knowledge base entry**: paste the contents of [`UNI-Design-AI-Guidelines/AI-builder-prompt.md`](./UNI-Design-AI-Guidelines/AI-builder-prompt.md) verbatim (it fits under the char cap) plus a line telling Lovable to read the relevant `/UNI-Design-AI-Guidelines/*.md` file for the area it's building.
 
 Updates to the repo arrive automatically through the sync; the Knowledge base entry only needs updating if `AI-builder-prompt.md`'s rules themselves change.
@@ -24,7 +24,7 @@ This repo ships as an installable **Claude Code plugin** (`.claude-plugin/market
 One-time setup:
 
 ```
-/plugin marketplace add emanrique_unf/uni-design-ai-guidelines
+/plugin marketplace add erikdandrade/uni-design-ai-guidelines
 /plugin install uni-design@uni-design-ai-guidelines
 ```
 
@@ -37,7 +37,7 @@ The skill triggers automatically on UI-generation requests ("build a screen", "i
 Replit has no plugin/marketplace mechanism and importing this repo directly would create a *separate* Repl rather than adding to an existing project. Instead, bring the guidelines in as a submodule of your own project:
 
 ```
-git submodule add https://github.com/emanrique_unf/uni-design-ai-guidelines.git uni-design-ai-guidelines
+git submodule add https://github.com/erikdandrade/uni-design-ai-guidelines.git uni-design-ai-guidelines
 ```
 
 Then add a pointer to your own project's `replit.md` (the file Replit Agent reads each session for persistent context), mirroring the pattern this repo uses in its own `CLAUDE.md`:

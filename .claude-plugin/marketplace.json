@@ -1,8 +1,7 @@
 {
   "name": "uni-design-ai-guidelines",
   "owner": {
-    "name": "Unifonic Design Systems",
-    "email": "emanrique@unifonic.com"
+    "name": "Unifonic Design Systems"
   },
   "description": "UNI Design System AI Guidelines — specs and assets that steer AI-assisted UI generation for Unifonic products.",
   "plugins": [

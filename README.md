@@ -10,4 +10,4 @@ It is not an application. There is nothing to run or deploy here.
 
 ## Access model
 
-This repo is read-only for consumers and centrally maintained. If you find a gap or an error in a spec, open a PR against `main` rather than forking a divergent copy — every tool listed in `SETUP.md` reads directly from this repo, so a fix here reaches everyone.
+This repo lives on a personal GitHub account (`erikdandrade`), not a Unifonic-managed org — it replaced the earlier `unifonic-engineering`-hosted copy once company-provisioned GitHub access was no longer available. It's public and read-only for consumers; open a PR against `main` rather than forking a divergent copy — every tool listed in `SETUP.md` reads directly from this repo, so a fix here reaches everyone. There's no org-settings access control here, so merge review is solely at the maintainer's discretion.
