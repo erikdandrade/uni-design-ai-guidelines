@@ -13,7 +13,7 @@ Before generating or styling any UI, read `UNI-Design-AI-Guidelines/AI-builder-p
 - `Side-navigation.md` — the `uni-menu` side nav: anatomy, states, content map
 - `Top-bar.md` — the Main Top Bar / Local Header swap pair
 
-Ask the **build context** question from `AI-builder-prompt.md` ("inside the Unifonic Platform, or standalone tool?") before generating anything, unless it's already clear from the request.
+Work through the **"Ask this first"** gate in `AI-builder-prompt.md` before generating anything, in order, skipping only what the request already makes clear: (1) build context — "inside the Unifonic Platform, or standalone tool?"; (2) if platform-embedded, layout mode — Default / Focus Mode → Full Width / Focus Mode → Split View, which decides the header; (3) if platform-embedded *and* Default, which Console/Section for the side-nav icon.
 
 **Icons**: the 20 section-logo SVGs live in `UNI-Design-AI-Guidelines/menu-icons/` (mapped in `MANIFEST.md`). Inline the raw `<svg>…</svg>` markup directly into generated code — never reference an icon by external URL.
 
