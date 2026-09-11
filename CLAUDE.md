@@ -15,7 +15,8 @@ README.md                          ← front door: what this repo is, links to C
 SETUP.md                           ← per-tool instructions: Lovable, Claude Code, Replit, Claude.ai Projects
 
 UNI-Design-AI-Guidelines/          ← the authoritative specs (formerly reference/)
-├── AI-builder-prompt.md            ← the prompt injected into Lovable: authority + anti-invention rules
+├── START-HERE.md                   ← builder entry point: the mandatory question gate + file index. Read before generating.
+├── AI-builder-prompt.md            ← authority + anti-invention rules + the 3-question gate in full
 ├── Design-guidelines.md            ← typography, spacing, radius, elevation, colors, components (Containers, Button, Side Nav, Platform Headers)
 ├── Color-tokens.md                 ← full color-token → hex reference
 ├── Layout.md                       ← shell structure + layout modes (Default, Focus Mode: Full Width / Split View)
@@ -24,7 +25,7 @@ UNI-Design-AI-Guidelines/          ← the authoritative specs (formerly referen
 └── menu-icons/                     ← 20 section-logo SVGs + MANIFEST.md (Section → file mapping)
 
 .claude-plugin/marketplace.json    ← Claude Code plugin marketplace catalog (one plugin: "uni-design", source = repo root)
-skills/uni-design/SKILL.md         ← the installable skill: triggers on UI-gen requests, points at AI-builder-prompt.md
+skills/uni-design/SKILL.md         ← the installable skill: triggers on UI-gen requests, points at START-HERE.md
 
 external/                           ← untracked scratch/source (uni-menu.md, uni-menu-icons/); not part of the guidelines
 ```
@@ -35,8 +36,10 @@ external/                           ← untracked scratch/source (uni-menu.md, u
 - **Header swap pair.** The shell's top row renders exactly one header: **Main Top Bar** in Default mode, **Local Header** throughout Focus Mode (both Full Width *and* Split View). Embedded apps (Agent Console, Chatbot) render neither. Both are **72px**. Full spec in `Top-bar.md`.
 - **Anti-invention rules** live in `AI-builder-prompt.md`: documented values only; a geometry-only region is a *gap* (render empty + flag, don't populate); enumerated states are *closed* (add no background/border/shadow not listed); strip shadcn structural defaults not in the spec. These exist because Lovable once invented a whole top bar and a green selected-row pill.
 - **Icon manifest** (`menu-icons/MANIFEST.md`) is verified consistent with the Side-nav content map: 20 unique SVGs, `reports-and-logs-logo.svg` shared by User→`Reports&Logs` and Admin→`Reporting`.
-- **How the guidelines reach each tool:** see `SETUP.md` for the full per-tool recipe. Lovable: **GitHub two-way sync** (full specs) + **Knowledge base** entry (the `AI-builder-prompt.md` rules + a "read the relevant `/UNI-Design-AI-Guidelines/*.md` file" pointer; Knowledge caps at ~10,000 chars, so the bulk specs stay in the synced repo). Claude Code: install this repo as a **plugin** (`/plugin marketplace add erikdandrade/uni-design-ai-guidelines`) — the `uni-design` skill (`skills/uni-design/SKILL.md`) triggers on UI-gen requests. Replit: git submodule + a pointer in the consuming project's own `replit.md`. Claude.ai Projects: GitHub connector on manual "Sync now" (no live sync yet).
-- **Icons are always inlined, never linked out.** `menu-icons/` SVGs travel with the repo via whatever sync mechanism each tool uses (above); generated code must inline the raw `<svg>` markup rather than reference an external URL — this matters most for Claude.ai Artifacts, whose CSP blocks external image/network requests outright.
+- **The 3-question gate is mandatory** and must fire *before* any generation: build context (platform-embedded vs standalone) → layout mode/header → side-nav icons. Questions 2 and 3 are separately gated, not implied by question 1. Full text in `AI-builder-prompt.md` → *Ask this first*; the short form is in `START-HERE.md`.
+- **How the guidelines reach each tool:** see `SETUP.md` for the full per-tool recipe. **Lovable's GitHub integration is export-only** (it cannot import/sync an external repo) — so Lovable is asked to **clone this repo into a subfolder** of the project, plus a short Knowledge-base pointer to `START-HERE.md` so the rule fires on every message. Claude Code: install this repo as a **plugin** (`/plugin marketplace add erikdandrade/uni-design-ai-guidelines`) — the `uni-design` skill (`skills/uni-design/SKILL.md`) triggers on UI-gen requests and points at `START-HERE.md`. Replit: git submodule + a pointer in the consuming project's own `replit.md`. Claude.ai Projects: GitHub connector on manual "Sync now" (no live sync yet), custom instructions point at `START-HERE.md`.
+- **Icons: import the local file when the repo's files are physically present in the project (Lovable/Replit), otherwise inline the raw `<svg>` markup — never reference an icon by external URL.** This matters most for Claude.ai Artifacts, whose CSP blocks external image/network requests outright.
+- **A Lovable clone is a point-in-time snapshot.** Nothing auto-updates there — consumers re-clone to refresh. Keep `START-HERE.md` accurate, since it's the only always-on instruction a clone carries (it explicitly tells the AI to ignore `README.md`/`SETUP.md`/`CLAUDE.md` as maintainer-only files).
 
 ## How to work in this repo
 
@@ -50,6 +53,14 @@ external/                           ← untracked scratch/source (uni-menu.md, u
 ## Session Log
 
 _Append newest entries at the top. Keep each entry to what changed and why — commit history holds the line-level detail._
+
+### 2026-09-11 (2)
+- **Ported the builder-facing distribution workflow in from `erikdandrade/unifonic-design`**, a separate, more-evolved public repo discovered mid-session that already implemented the "new public repo for PM/Lovable import" plan from 2026-07-28 (built 2026-08-03, outside this working directory, never logged here). Rather than keep two diverging public repos, the user decided `uni-design-ai-guidelines` is the one and only repo going forward — so its improvements were merged in here instead of retiring in place:
+  - **Added `UNI-Design-AI-Guidelines/START-HERE.md`** — the short, builder-facing entry point (question gate, core rules, file index, and an explicit "ignore README/SETUP/CLAUDE.md" instruction for the AI). This is now the file every tool's setup recipe points an AI builder at first; `AI-builder-prompt.md` remains the full rule set (read second) and gained a line referencing it.
+  - **Corrected `SETUP.md`'s Lovable section** — it previously claimed a "GitHub two-way sync," which is wrong: Lovable's GitHub integration is **export-only** (it owns/mirrors a repo it generates; it cannot import or read an external one). Replaced with the verified workflow: ask Lovable to clone this repo into a project subfolder, add a ~40-word Knowledge pointer to `START-HERE.md`, and verify the gate actually fires before trusting it.
+  - **Updated `skills/uni-design/SKILL.md`** to read `START-HERE.md` first, and to prefer importing the local `.svg` file over inlining when the repo's files are physically present in the project (previously said "always inline").
+- **The PM-facing Lovable prompt** (clone repo → subfolder → read `START-HERE.md`) now points at `erikdandrade/uni-design-ai-guidelines` and is added to `README.md`'s Quick start section — this is what gets handed to PMs.
+- _Status: committed and pushed to `origin` (`erikdandrade/uni-design-ai-guidelines`), `main`. The old `erikdandrade/unifonic-design` repo was left untouched (not deleted) but is no longer the intended distribution point._
 
 ### 2026-09-11
 - **Migrated canonical hosting off Unifonic-managed GitHub entirely, to the personal account `erikdandrade`.** Trigger: the user is losing access to `emanrique_unf`, the Unifonic-provisioned GitHub identity that owned the `origin` remote — so the plan from 2026-07-28 (a new public repo for outside distribution) got pulled forward and repurposed as the sole canonical repo, replacing `unifonic-engineering/uni-design-ai-guidelines` rather than sitting alongside it.

@@ -1,7 +1,8 @@
 # UNI Design System — AI Guidelines
 
-This project uses the **UNI Design System**. The following files — the **UNI Design AI Guidelines** — are uploaded alongside this prompt:
+This project uses the **UNI Design System**. The following files — the **UNI Design AI Guidelines** — sit alongside this one, whether they were cloned into the project, synced as Knowledge, or bundled by a plugin:
 
+- **`START-HERE.md`** — The short entry point: the mandatory question gate, the rules that matter most, and which file to read for what. Read it first if you haven't.
 - **`Design-guidelines.md`** — Typography, layouts, spacing, radius, elevation, colors (usage summary), and component specs.
 - **`Color-tokens.md`** — Full color token reference with hex values per role (text, background, surface, border, divider, icon).
 - **`Layout.md`** — Shell structure and layout modes (Default with Expanded/Collapsed nav states; Focus Mode with Full Width and Split View variants).
